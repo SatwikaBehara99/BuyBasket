@@ -1,0 +1,170 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id @default(cuid())
+  name      String?
+  email     String     @unique
+  password  String
+  role      String     @default("user")
+  createdAt DateTime   @default(now())
+  phone     String     @unique
+  firstName String?
+  lastName  String?
+  gender    String?
+  carts     Cart[]
+  orders    Order[]
+  wishlists Wishlist[]
+  addresses Address[]
+}
+
+model Address {
+  id     String @id @default(cuid())
+  userId String
+
+  name     String
+  phone    String
+  pincode  String
+  locality String
+  area     String
+  city     String
+  state    String
+
+  landmark       String?
+  alternatePhone String?
+
+  addressType AddressType @default(HOME)
+
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum AddressType {
+  HOME
+  WORK
+}
+
+model Admin {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+}
+
+model Blog {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  image       String?
+  createdAt   DateTime @default(now())
+}
+
+model Product {
+  id             String           @id @default(cuid())
+  name           String
+  description    String?
+  createdAt      DateTime         @default(now())
+  packaging      String?
+  category       String?
+  subSubcategory String?
+  subcategory    String?
+  variants       ProductVariant[]
+}
+
+model ProductVariant {
+  id         String         @id @default(cuid())
+  name       String
+  price      Int
+  stock      Int
+  image      String?
+  productId  String
+  cartItems  CartItem[]
+  orderItems OrderItem[]
+  product    Product        @relation(fields: [productId], references: [id], onDelete: Cascade)
+  wishlists  WishlistItem[]
+}
+
+model Cart {
+  id        String     @id @default(cuid())
+  userId    String
+  createdAt DateTime   @default(now())
+  user      User       @relation(fields: [userId], references: [id])
+  items     CartItem[]
+}
+
+model CartItem {
+  id        String         @id @default(cuid())
+  cartId    String
+  variantId String
+  quantity  Int            @default(1)
+  cart      Cart           @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  variant   ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+}
+
+model Order {
+  id                String      @id @default(cuid())
+  amount            Int
+  status            OrderStatus @default(PENDING)
+  razorpayOrderId   String?
+  razorpayPaymentId String?
+  userId            String?
+  createdAt         DateTime    @default(now())
+  user              User?       @relation(fields: [userId], references: [id])
+  items             OrderItem[]
+  deliveryName      String?
+  deliveryPhone     String?
+  deliveryPincode   String?
+  deliveryLocality  String?
+  deliveryArea      String?
+  deliveryCity      String?
+  deliveryState     String?
+  deliveryLandmark  String?
+}
+
+model OrderItem {
+  id              String         @id @default(cuid())
+  quantity        Int
+  priceAtPurchase Int
+  orderId         String
+  variantId       String
+  name            String
+  variantName     String
+  order           Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  variant         ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+}
+
+model Wishlist {
+  id        String         @id @default(cuid())
+  userId    String
+  createdAt DateTime       @default(now())
+  user      User           @relation(fields: [userId], references: [id])
+  items     WishlistItem[]
+}
+
+model WishlistItem {
+  id         String         @id @default(cuid())
+  wishlistId String
+  variantId  String
+  variant    ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  wishlist   Wishlist       @relation(fields: [wishlistId], references: [id], onDelete: Cascade)
+
+  @@unique([wishlistId, variantId])
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  RETURNED
+  FAILED
+}
