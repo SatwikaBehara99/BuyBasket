@@ -17,23 +17,9 @@ export async function PUT(req: Request) {
     }
 
     const {
-      name,
-      gender,
-      email,
-      phone,
-      addresses,
-      currentPassword,
-      newPassword,
-    } = await req.json();
-
-    console.log("SESSION EMAIL:", session.user.email);
-    console.log("DATA:", {
-      name,
-      gender,
-      email,
-      phone,
-      addresses,
-    });
+      name, gender, email, phone, addresses, currentPassword, newPassword, } = await req.json();
+      console.log("SESSION EMAIL:", session.user.email);
+      console.log("DATA:", { name, gender, email, phone, addresses, });
 
     const existingUser =
       await prisma.user.findUnique({

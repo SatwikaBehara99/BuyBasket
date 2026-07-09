@@ -4,12 +4,13 @@ import { useCart } from "@/context/CartContext";
 import { Trash2, Bookmark, ShieldCheck, Truck } from "lucide-react";
 import {useSession} from "next-auth/react";
 import {useRouter } from "next/navigation";
+import Link from "next/link";
 
 
 export default function CartPage() {  
   const {cart,loading, removeFromCart,increaseQty,decreaseQty,getTotal,}= useCart();
   const router = useRouter();
-  const {data: session, status}= useSession();
+  const {data: session}= useSession();
   const getDeliveryDate = () => {
     const date = new Date();
     date.setDate(date.getDate() + 3);
@@ -19,14 +20,13 @@ export default function CartPage() {
       day: "numeric",
     });
   };
-  
-if (status === "loading") {
+  if(loading) {
   return (
     <div className="min-h-screen flex items-center justify-center
     bg-gradient-to-br from-gray-50 via-white to-green-50
     dark:from-gray-950 dark:via-black dark:to-gray-900
     text-gray-700 dark:text-gray-300">
-      Loading...
+      Loading cart...
     </div>
   );
 }
@@ -35,7 +35,7 @@ if (status === "loading") {
 
 if (!cart || cart.length === 0) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 to-white dark:from-gray-950 dark:to-black text-black dark:text-white flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 dark:from-gray-950 dark:to-black text-black dark:text-white flex items-center justify-center px-4">
       <div className="bg-white dark:bg-gray-900 shadow-xl rounded-3xl p-10 text-center max-w-md w-full">
 
         <div className="text-6xl mb-4">
@@ -47,15 +47,15 @@ if (!cart || cart.length === 0) {
         </h1>
 
         <p className="text-gray-500 dark:text-gray-400 mb-6">
-          Looks like you haven’t added spices yet.
+          Looks like your cart is empty. Explore our products and add your favorite spices.
         </p>
 
-        <a
+        <Link
           href="/products"
-          className="inline-block bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-xl font-semibold transition"
+          className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-semibold transition"
         >
           Explore Products
-        </a>
+        </Link>
 
       </div>
     </div>
@@ -87,7 +87,7 @@ if (!cart || cart.length === 0) {
 
                   {/* IMAGE */}
                   <div className="bg-gradient-to-br from-gray-100 to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-4 flex items-center justify-center min-w-[140px] h-[140px]">
-                    <img src={item.image || "/spices.png"} alt={item.name} className="w-32 h-32 object-contain hover:scale-105 transition" />
+                    <img src={item.image || "/spices.png"} alt={item.name} width={120} height={120} className="w-32 h-32 object-contain hover:scale-105 transition" />
                   </div>
 
                   {/* DETAILS */}
@@ -146,9 +146,9 @@ if (!cart || cart.length === 0) {
               <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
 
                 {/* TOP */}
-                <div className="bg-gradient-to-r from-red-600 to-red-500 p-5 text-white">
+                <div className="bg-gradient-to-r from-blue-600 to-blue-500 p-5 text-white">
                   <h2 className="text-2xl font-bold">Price Details </h2>
-                  <p className="text-red-100 mt-1 text-sm"> Secure checkout with fast delivery </p>
+                  <p className="text-blue-100 mt-1 text-sm"> Secure checkout with fast delivery </p>
                 </div>
 
                 {/* CONTENT */}
@@ -199,7 +199,7 @@ if (!cart || cart.length === 0) {
                   router.push("/checkout");
 
 }}
-                  className="w-full mt-7 py-4 rounded-2xl font-bold text-lg bg-red-600 hover:bg-red-700 text-white shadow-lg hover:shadow-red-200 transition" >
+                  className="w-full mt-7 py-4 rounded-2xl font-bold text-lg bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-blue-300 transition-all duration-300" >
                   Place Order
                   </button>
                 </div>

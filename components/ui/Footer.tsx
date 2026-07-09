@@ -1,82 +1,101 @@
 import Link from "next/link";
-import { MapPin, Phone, Mail } from "lucide-react";
+import { Facebook, Instagram, Twitter, Mail, Phone } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-[#4F7462] text-white px-6 md:px-16 pt-16 pb-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Top Section */}
-        <div className="grid md:grid-cols-3 gap-12">
-          {/* Brand Column */}
+    <footer className="bg-slate-900 text-white mt-16">
+      <div className="max-w-7xl mx-auto px-6 py-14">
+
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+
           <div>
-            <h2 className="text-3xl font-serif tracking-widest mb-4">
-              SPICERY
+            <h2 className="text-3xl font-bold text-blue-400">
+              BuyBasket
             </h2>
 
-            <p className="text-[#FFC96E] text-sm">
-              Warning : May cause happiness!
+            <p className="text-gray-400 mt-3">
+              Everything You Need in One Basket.
             </p>
           </div>
 
-          {/* Explore Column */}
           <div>
-            <h3 className="text-lg font-semibold mb-4 relative inline-block">
-              Explore
-              <span className="absolute -bottom-1 left-0 w-8 h-0.5 bg-[#FFC96E]" />
+            <h3 className="font-semibold mb-4">
+              Quick Links
             </h3>
 
-            <ul className="space-y-3 text-white/80 text-sm">
-              <li>
-                <Link href="/">Home</Link>
-              </li>
-              <li>
-                <Link href="/our-story">Our story</Link>
-              </li>
-              <li>
-                <Link href="/products">Products</Link>
-              </li>
-              <li>
-                <Link href="/blogs">Blogs</Link>
-              </li>
-            </ul>
-          </div>
+            <div className="flex flex-col gap-2 text-gray-400">
 
-          {/* Contact Column */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4 relative inline-block">
-              Contact us
-              <span className="absolute -bottom-1 left-0 w-8 h-0.5 bg-[#FFC96E]" />
-            </h3>
+              <Link href="/">Home</Link>
 
-            <div className="space-y-4 text-white/80 text-sm">
-              <div className="flex gap-3 items-start">
-                <MapPin size={16} className="mt-1 text-[#FFC96E]" />
-                <p>
-                  Lorem ipsum is placeholder text commonly used in the graphic,
-                  print, and publishing industries.
-                </p>
-              </div>
+              <Link href="/products">Products</Link>
 
-              <div className="flex gap-3 items-center">
-                <Phone size={16} className="text-[#FFC96E]" />
-                <p>+91 88888 11111, +91 99999 22222</p>
-              </div>
+              <Link href="/wishlist">Wishlist</Link>
 
-              <div className="flex gap-3 items-center">
-                <Mail size={16} className="text-[#FFC96E]" />
-                <p>info@spicery.com</p>
-              </div>
+              <Link href="/cart">Cart</Link>
+
             </div>
           </div>
+
+          <div>
+
+            <h3 className="font-semibold mb-4">
+              Customer Support
+            </h3>
+
+            <div className="flex flex-col gap-3 text-gray-400">
+
+              <p>Help Center</p>
+
+              <p>Returns</p>
+
+              <p>Privacy Policy</p>
+
+              <p>Terms & Conditions</p>
+
+            </div>
+
+          </div>
+
+          <div>
+
+            <h3 className="font-semibold mb-4">
+              Contact
+            </h3>
+
+            <div className="space-y-3 text-gray-400">
+
+              <div className="flex items-center gap-2">
+                <Mail size={18}/>
+                support@buybasket.com
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Phone size={18}/>
+                +91 9876543210
+              </div>
+
+              <div className="flex gap-4 mt-5">
+
+                <Facebook className="cursor-pointer"/>
+
+                <Instagram className="cursor-pointer"/>
+
+                <Twitter className="cursor-pointer"/>
+
+              </div>
+
+            </div>
+
+          </div>
+
         </div>
 
-        {/* Divider */}
-        <div className="border-t border-white/20 my-10" />
+        <div className="border-t border-slate-700 mt-10 pt-6 text-center text-gray-400">
 
-        {/* Bottom Section */}
-        <p className="text-white/70 text-sm text-center md:text-left">
-          Copyright © - 2026. Spicery. All Rights Reserved.
-        </p>
+          © 2026 BuyBasket. All Rights Reserved.
+
+        </div>
+
       </div>
     </footer>
   );

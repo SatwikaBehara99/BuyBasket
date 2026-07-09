@@ -1,5 +1,5 @@
 {
-  "name": "spicery",
+  "name": "buybasket",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -21,8 +21,10 @@
     "razorpay": "^2.9.6",
     "react": "19.2.3",
     "react-dom": "19.2.3",
+    "resend": "^6.17.2",
     "ts-node": "^10.9.2",
-    "uploadthing": "^7.7.4"
+    "uploadthing": "^7.7.4",
+    "uuid": "^14.0.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

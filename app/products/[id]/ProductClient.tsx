@@ -2,14 +2,16 @@
 
 import Image from "next/image";
 import { useState, useEffect, } from "react";
-import { Heart, Star, ShieldCheck, Truck, BadgeCheck, } from "lucide-react";
+import { Heart, Star, ShieldCheck, Truck, BadgeCheck, ChevronRight, Share2, } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import Link from "next/link";
 
-export default function ProductClient({ product, }: any) {
+export default function ProductClient({ product, relatedProducts }: any) {
   const { addToCart } = useCart();
   const [selected, setSelected] = useState(product.variants[0]);
   const [liked, setLiked] = useState(false);
   const [message, setMessage] = useState("");
+  const [quantity,setQuantity] = useState(1);
 
   //  RATING
   const rating = 4.4;
@@ -51,16 +53,22 @@ useEffect(() => { const checkWishlist = async () => {
   //  ADD TO CART
   const handleCart = () => {
     if (!selected) return;
+    if(stock === 0) {
+      setMessage("Out of Stock")
+      setTimeout(() => setMessage(""),2000)
+      return;
+    }
     addToCart({
       variantId: selected.id,
       name: product.name,
       variant: selected.name,
+      quantity,
       price: selected.price,
       mrp,
       rating,
       image:
         selected.image ||
-        "/spices.png",
+        "/product-placeholder.png",
     });
 
     setMessage(
@@ -125,11 +133,60 @@ useEffect(() => { const checkWishlist = async () => {
   }
 };
 
+const handleShare = async () => {
+  const url = window.location.href;
+
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: product.name,
+        text: `Check out ${product.name}`,
+        url,
+      });
+    } catch {}
+  } else {
+    await navigator.clipboard.writeText(url);
+    setMessage("Product link copied ✅");
+
+    setTimeout(() => {
+      setMessage("");
+    }, 2000);
+  }
+};
+
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-gray-50 dark:from-gray-900 dark:via-gray-950 dark:to-black py-10 px-4">
-      <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-start">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-gray-50 dark:from-gray-900 dark:via-gray-950 dark:to-black py-10 px-4">
+      <div className="max-w-7xl mx-auto">
+      
+        {/* BREADCRUMBS */}
+        <div className="mb-8 flex items-center gap-2 text-sm text-gray-500 flex-wrap">
+  <Link href="/" className="hover:text-blue-600">
+    Home
+  </Link>
+
+  <ChevronRight size={16} />
+
+  <Link href="/products" className="hover:text-blue-600">
+    Products
+  </Link>
+
+  {product.category && (
+    <>
+      <ChevronRight size={16} />
+      <span>{product.category}</span>
+    </>
+  )}
+
+  <ChevronRight size={16} />
+
+  <span className="font-semibold text-gray-900 dark:text-white">
+    {product.name}
+  </span>
+</div>
+
+<div className=" grid lg:grid-cols-2 gap-12 items-start">
 
         {/* LEFT */}
         <div className="sticky top-24">
@@ -142,7 +199,7 @@ useEffect(() => { const checkWishlist = async () => {
                 <Image
                   src={
                     selected?.image ||
-                    "/spices.png"
+                    "/product-placeholder.png"
                   }
                   alt={product.name}
                   width={500}
@@ -173,10 +230,14 @@ useEffect(() => { const checkWishlist = async () => {
           </div>
         </div>
 
+
+
         {/* RIGHT */}
         <div>
           {/* BRAND */}
-          <p className="text-red-600 dark:text-red-400 font-semibold tracking-wide uppercase text-sm"> Spicery Premium </p>
+          <p className="text-blue-600 dark:text-blue-400 font-semibold tracking-wide uppercase text-sm">
+            {product.brand || "BuyBasket"}
+          </p>
 
           {/* TITLE */}
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mt-2 leading-tight"> {product.name} </h1>
@@ -211,16 +272,19 @@ useEffect(() => { const checkWishlist = async () => {
 
           {/* STOCK */}
           <div className="mt-6">
-            {stock <= 3 ? (
-              <div className="inline-flex items-center gap-2 bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200 px-4 py-2 rounded-full font-semibold">
-                🔥 Only {stock} left in stock
-              </div>
-            ) : (
-
-              <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-200 px-4 py-2 rounded-full font-semibold">
-                ✅ In Stock
-              </div>
-            )}
+            {stock === 0 ? (
+  <div className="inline-flex items-center gap-2 bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200 px-4 py-2 rounded-full font-semibold">
+    ❌ Out of Stock
+  </div>
+) : stock <= 3 ? (
+  <div className="inline-flex items-center gap-2 bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-200 px-4 py-2 rounded-full font-semibold">
+    🔥 Only {stock} left
+  </div>
+) : (
+  <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-200 px-4 py-2 rounded-full font-semibold">
+    ✅ In Stock
+  </div>
+)}
 
           </div>
 
@@ -235,15 +299,17 @@ useEffect(() => { const checkWishlist = async () => {
                   return (
                     <button
                       key={v.id}
-                      onClick={() =>
-                        setSelected(v)
+                      onClick={() => {
+                        setSelected(v);
+                        setQuantity(1);
+                      }
                       }
                       className={`px-6 py-4 rounded-2xl border-2 transition-all cursor-pointer text-left min-w-[120px]
 
                       ${
                         active
-                          ? "border-red-500 bg-red-50 text-black dark:text-white shadow-lg dark:bg-gray-800 "
-                          : "border-gray-200 hover:border-red-300 hover:bg-red-50 dark:border-gray-600 dark:hover:border-red-300 dark:hover:bg-gray-800"
+                          ? "border-blue-500 bg-blue-50 text-black dark:text-white shadow-lg dark:bg-gray-800 "
+                          : "border-gray-200 hover:border-blue-300 hover:bg-blue-50 dark:border-gray-600 dark:hover:border-blue-300 dark:hover:bg-gray-800"
                       }
                     `}
                     >
@@ -266,32 +332,85 @@ useEffect(() => { const checkWishlist = async () => {
 
             </div>
           </div>
+          
 
           {/* BUTTONS */}
-          <div className="flex gap-4 mt-10 flex-wrap">
+          <div className="flex items-end justify-between gap-4 mt-10 flex-wrap">
+
+            {/* QUANTITY */}
+ <div className="mt-8">
+  <p className="font-semibold mb-3 text-gray-800 dark:text-white">
+    Quantity
+  </p>
+
+  <div className="flex items-center w-fit border rounded-xl overflow-hidden">
+
+    <button
+      onClick={() =>
+        setQuantity((q) => Math.max(1, q - 1))
+      }
+      disabled={quantity === 1}
+      className="px-5 py-3 text-xl hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
+    >
+      −
+    </button>
+
+    <span className="px-6 font-bold text-lg">
+      {quantity}
+    </span>
+
+    <button
+      onClick={() =>
+        setQuantity((q) =>
+          Math.min(stock, q + 1)
+        )
+      }
+      disabled={quantity >= stock}
+      className="px-5 py-3 text-xl hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
+    >
+      +
+    </button>
+
+  </div>
+</div>
+
 
             {/* CART */}
-            <button onClick={handleCart}
-              className="bg-red-600 hover:bg-red-700 text-white px-10 py-4 rounded-2xl text-lg font-bold shadow-lg hover:shadow-red-200 dark:hover:shadow-red-900 transition"
-            >
-              Add to Cart
-            </button>
+            
+
+            <button
+  onClick={handleCart}
+  disabled={stock === 0}
+  className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white px-10 py-4 rounded-2xl text-lg font-bold shadow-lg transition"
+>
+  {stock === 0 ? "Out of Stock" : "Add to Cart"}
+</button>
 
             {/* WISHLIST */}
             <button onClick={ handleWishlist }
               className={`p-4 rounded-2xl border transition duration-300
               ${
                 liked
-                  ? "bg-red-600 border-red-600 text-white shadow-lg shadow-red-200"
-                  : "bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 hover:border-red-300"
+                  ? "bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-200"
+                  : "bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 hover:border-blue-300"
               }
               `}
             >
 
               <Heart size={22} fill={ liked ? "white" : "none" }
               />
-            </button>
+            </button>{/* SHARE */}
+          <button
+  onClick={handleShare}
+  className="p-4 rounded-2xl border hover:border-blue-300 transition"
+>
+  <Share2 size={22} />
+</button>
+
+
           </div>
+
+
 
           {/* EXTRA INFO */}
           <div className="mt-10 bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-md p-6 space-y-4">
@@ -314,6 +433,56 @@ useEffect(() => { const checkWishlist = async () => {
           </div>
         </div>
       </div>
+      </div>
+
+      {/* RELATED PRODUCTS */}
+
+{relatedProducts.length > 0 && (
+  <div className="max-w-7xl mx-auto mt-20">
+    <h2 className="text-3xl font-bold mb-8 text-gray-900 dark:text-white">
+      Related Products
+    </h2>
+
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {relatedProducts.map((item: any) => (
+        <Link
+          key={item.id}
+          href={`/products/${item.id}`}
+          className="group bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow hover:shadow-xl transition"
+        >
+          <div className="h-56 flex items-center justify-center bg-gray-50 dark:bg-gray-800">
+            <Image
+              src={
+                item.variants[0]?.image ||
+                "/product-placeholder.png"
+              }
+              alt={item.name}
+              width={180}
+              height={180}
+              className="object-contain group-hover:scale-110 transition duration-300"
+            />
+          </div>
+
+          <div className="p-5">
+            <h3 className="font-semibold text-lg text-gray-900 dark:text-white line-clamp-2">
+              {item.name}
+            </h3>
+
+            <p className="mt-2 text-2xl font-bold text-blue-600">
+              ₹{item.variants[0]?.price}
+            </p>
+
+            <button className="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-xl transition">
+              View Details →
+            </button>
+          </div>
+        </Link>
+      ))}
+    </div>
+  </div>
+  
+)}
+
 
       {/* TOAST */}
       {message && (

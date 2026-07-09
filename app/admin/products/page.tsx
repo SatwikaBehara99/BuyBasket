@@ -60,6 +60,27 @@ export default async function AdminProductsPage() {
                   <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
                     {product.name}
                   </h2>
+                  <div className="flex flex-wrap gap-2 mt-2">
+
+  {product.category && (
+    <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs">
+      {product.category}
+    </span>
+  )}
+
+  {product.subcategory && (
+    <span className="bg-green-100 text-green-700 px-2 py-1 rounded text-xs">
+      {product.subcategory}
+    </span>
+  )}
+
+  {product.subSubcategory && (
+    <span className="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs">
+      {product.subSubcategory}
+    </span>
+  )}
+
+</div>
 
                   <p className="text-gray-500 dark:text-gray-400 text-sm mt-2 max-w-xl">
                     {product.description || "No description"}
@@ -89,6 +110,30 @@ export default async function AdminProductsPage() {
 
             {/* VARIANTS */}
             <div>
+              <div className="mb-5 grid grid-cols-3 gap-3">
+
+  <div className="rounded-lg bg-gray-100 dark:bg-gray-800 p-3">
+    <p className="text-xs text-gray-500">Category</p>
+    <p className="font-semibold">
+      {product.category || "-"}
+    </p>
+  </div>
+
+  <div className="rounded-lg bg-gray-100 dark:bg-gray-800 p-3">
+    <p className="text-xs text-gray-500">Subcategory</p>
+    <p className="font-semibold">
+      {product.subcategory || "-"}
+    </p>
+  </div>
+
+  <div className="rounded-lg bg-gray-100 dark:bg-gray-800 p-3">
+    <p className="text-xs text-gray-500">Child Category</p>
+    <p className="font-semibold">
+      {product.subSubcategory || "-"}
+    </p>
+  </div>
+
+</div>
               <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-3">
                 Variants
               </h3>

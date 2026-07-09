@@ -5,7 +5,7 @@ import Link from "next/link";
 export default function CartSigninPage() {
   return (
     <div className="min-h-screen flex items-center justify-center
-    bg-gradient-to-br from-gray-50 via-white to-green-50
+    bg-gradient-to-br from-blue-50 via-white to-blue-100
     dark:from-gray-950 dark:via-black dark:to-gray-900 px-4">
 
       <div className="bg-white dark:bg-gray-900 p-10 rounded-3xl shadow-xl text-center max-w-md w-full">
@@ -24,7 +24,7 @@ export default function CartSigninPage() {
 
         <Link
           href="/login?callbackUrl=/cart"
-          className="inline-block mt-6 bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-xl font-semibold"
+          className="inline-block mt-6 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-semibold"
         >
           Sign In
         </Link>

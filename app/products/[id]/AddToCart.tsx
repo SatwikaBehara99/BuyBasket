@@ -10,6 +10,11 @@ export default function AddToCart({ product }: any) {
   const [msg, setMsg] = useState("");
 
   const handleAdd = () => {
+    if (selected.stock === 0) {
+  setMsg("Out of Stock");
+  setTimeout(() => setMsg(""), 2000);
+  return;
+}
     if (!selected) return;
 
     addToCart({
@@ -17,12 +22,12 @@ export default function AddToCart({ product }: any) {
 
       name: product.name,
       variant: selected.name,
-
+      quantity:1,
       price: selected.price,
       mrp: selected.price + 20,
       rating: 4.2,
 
-      image: selected.image || "/spices.png",
+      image: selected.image || "/product-placeholder.png",
     });
 
     setMsg("Added to cart ✅");
@@ -45,9 +50,11 @@ export default function AddToCart({ product }: any) {
           <button
             key={v.id}
             onClick={() => setSelected(v)}
+          
+
             className={`px-4 py-2 border rounded transition ${
               selected?.id === v.id
-                ? "bg-green-600 text-white border-green-600"
+                ? "bg-blue-600 text-white border-blue-600"
                 : "border-gray-300 dark:border-gray-600 dark:text-white"
             }`}
           >
@@ -58,13 +65,13 @@ export default function AddToCart({ product }: any) {
 
       <button
         onClick={handleAdd}
-        className="bg-green-600 text-white px-6 py-3 rounded w-full"
+        className="bg-blue-600 hover:bg-blue-700 transition-colors text-white px-6 py-3 rounded w-full"
       >
         Add to Cart
       </button>
 
       {msg && (
-        <div className="mt-3 text-green-600 dark:text-green-400">
+        <div className="mt-3 text-blue-600 dark:text-blue-400">
           {msg}
         </div>
       )}

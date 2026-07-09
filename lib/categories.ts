@@ -1,182 +1,328 @@
 export const categories = [
   {
-    id: "veg",
-    name: "Vegetables",
+    id: "grocery",
+    name: "Grocery",
     sub: [
       {
-        id: "leafy",
-        name: "Leafy",
-        sub: ["Spinach", "Coriander", "Mint"],
+        id: "fruits",
+        name: "Fruits",
+        sub: [
+          "Apple",
+          "Banana",
+          "Mango",
+          "Orange",
+          "Grapes",
+          "Watermelon",
+          "Pomegranate",
+          "Kiwi",
+          "Papaya",
+          "Pineapple",
+        ],
       },
       {
-        id: "root",
-        name: "Root",
-        sub: ["Potato", "Carrot", "Beetroot"],
+        id: "vegetables",
+        name: "Vegetables",
+        sub: [
+          "Potato",
+          "Tomato",
+          "Onion",
+          "Carrot",
+          "Brinjal",
+          "Cabbage",
+          "Cauliflower",
+          "Spinach",
+          "Beans",
+          "Capsicum",
+        ],
       },
-      {
-        id: "exotic",
-        name: "Exotic",
-        sub: ["Broccoli", "Zucchini"],
-      },
-    ],
-  },
-  {
-    id: "fruits",
-    name: "Fruits",
-    sub: [
-      {
-        id: "seasonal",
-        name: "Seasonal",
-        sub: ["Mango", "Watermelon"],
-      },
-      {
-        id: "citrus",
-        name: "Citrus",
-        sub: ["Orange", "Lemon"],
-      },
-      {
-        id: "imported",
-        name: "Imported",
-        sub: ["Kiwi", "Dragon Fruit"],
-      },
-    ],
-  },
-  {
-    id: "spices",
-    name: "Spices",
-    sub: [
-      {
-        id: "whole",
-        name: "Whole Spices",
-        sub: ["Pepper", "Cloves"],
-      },
-      {
-        id: "powder",
-        name: "Powders",
-        sub: ["Turmeric", "Chilli Powder"],
-      },
-      {
-        id: "blended",
-        name: "Blended Masala",
-        sub: ["Garam Masala"],
-      },
-    ],
-  },
-  {
-    id: "dryfruits",
-    name: "Dry Fruits",
-    sub: [
-      {
-        id: "nuts",
-        name: "Nuts",
-        sub: ["Almonds", "Cashews"],
-      },
-      {
-        id: "raisins",
-        name: "Raisins",
-        sub: ["Black Raisins", "Golden Raisins"],
-      },
-    ],
-  },
-  {
-    id: "grains",
-    name: "Rice & Grains",
-    sub: [
       {
         id: "rice",
-        name: "Rice",
-        sub: ["Basmati", "Brown Rice"],
+        name: "Rice & Grains",
+        sub: [
+          "Basmati Rice",
+          "Brown Rice",
+          "Sona Masoori",
+          "Atta",
+          "Toor Dal",
+          "Moong Dal",
+          "Chana Dal",
+        ],
       },
       {
-        id: "atta",
-        name: "Atta",
-        sub: ["Wheat Flour"],
+        id: "spices",
+        name: "Spices & Masalas",
+        sub: [
+          "Turmeric",
+          "Red Chilli",
+          "Pepper",
+          "Coriander",
+          "Garam Masala",
+          "Biryani Masala",
+          "Salt"
+        ],
       },
       {
-        id: "dal",
-        name: "Dals & Pulses",
-        sub: ["Toor Dal", "Moong Dal"],
+        id: "beverages",
+        name: "Beverages",
+        sub: [
+          "Tea",
+          "Coffee",
+          "Soft Drinks",
+          "Juices",
+          "Energy Drinks",
+        ],
       },
     ],
   },
+
   {
-    id: "oil",
-    name: "Oils & Ghee",
+    id: "fashion",
+    name: "Fashion",
     sub: [
       {
-        id: "refined",
-        name: "Refined",
-        sub: ["Sunflower Oil"],
+        id: "men",
+        name: "Men",
+        sub: [
+          "T-Shirts",
+          "Shirts",
+          "Jeans",
+          "Trousers",
+          "Jackets",
+          "Shorts",
+        ],
       },
       {
-        id: "cold",
-        name: "Cold Pressed",
-        sub: ["Groundnut Oil"],
+        id: "women",
+        name: "Women",
+        sub: [
+          "Dresses",
+          "Tops",
+          "Jeans",
+          "Kurtis",
+          "Sarees",
+          "Leggings",
+        ],
+      },
+      {
+        id: "kids",
+        name: "Kids",
+        sub: [
+          "Boys Clothing",
+          "Girls Clothing",
+          "Baby Wear",
+        ],
       },
     ],
   },
+
   {
-    id: "masala",
-    name: "Masalas",
+    id: "footwear",
+    name: "Footwear",
     sub: [
       {
-        id: "mix",
-        name: "Blended",
-        sub: ["Biryani Masala"],
+        id: "men",
+        name: "Men",
+        sub: [
+          "Running Shoes",
+          "Casual Shoes",
+          "Formal Shoes",
+          "Sandals",
+          "Slippers",
+        ],
+      },
+      {
+        id: "women",
+        name: "Women",
+        sub: [
+          "Heels",
+          "Flats",
+          "Sneakers",
+          "Sandals",
+          "Slippers",
+        ],
       },
     ],
   },
+
   {
-    id: "snacks",
-    name: "Snacks",
+    id: "beauty",
+    name: "Beauty & Personal Care",
     sub: [
       {
-        id: "chips",
-        name: "Chips",
-        sub: ["Potato Chips"],
+        id: "makeup",
+        name: "Makeup",
+        sub: [
+          "Lipstick",
+          "Foundation",
+          "Compact",
+          "Mascara",
+          "Eyeliner",
+        ],
       },
       {
-        id: "namkeen",
-        name: "Namkeen",
-        sub: ["Mixture"],
+        id: "skincare",
+        name: "Skincare",
+        sub: [
+          "Face Wash",
+          "Moisturizer",
+          "Serum",
+          "Sunscreen",
+          "Face Cream",
+        ],
+      },
+      {
+        id: "haircare",
+        name: "Hair Care",
+        sub: [
+          "Shampoo",
+          "Conditioner",
+          "Hair Oil",
+          "Hair Serum",
+        ],
       },
     ],
   },
+
   {
-    id: "bev",
-    name: "Beverages",
+    id: "electronics",
+    name: "Electronics",
     sub: [
       {
-        id: "juice",
-        name: "Juices",
-        sub: ["Orange Juice"],
+        id: "mobiles",
+        name: "Mobiles",
+        sub: [
+          "Android Phones",
+          "iPhones",
+        ],
       },
       {
-        id: "soft",
-        name: "Soft Drinks",
-        sub: ["Cola"],
+        id: "laptops",
+        name: "Laptops",
+        sub: [
+          "Gaming Laptops",
+          "Business Laptops",
+          "Student Laptops",
+        ],
+      },
+      {
+        id: "audio",
+        name: "Audio",
+        sub: [
+          "Earbuds",
+          "Headphones",
+          "Bluetooth Speakers",
+        ],
+      },
+      {
+        id: "accessories",
+        name: "Accessories",
+        sub: [
+          "Chargers",
+          "Power Banks",
+          "Smart Watches",
+          "Phone Cases",
+        ],
       },
     ],
   },
+
   {
-    id: "dairy",
-    name: "Dairy",
+    id: "home",
+    name: "Home & Kitchen",
     sub: [
       {
-        id: "milk",
-        name: "Milk",
-        sub: ["Full Cream"],
+        id: "kitchen",
+        name: "Kitchen",
+        sub: [
+          "Cookware",
+          "Pressure Cookers",
+          "Storage Containers",
+          "Water Bottles",
+        ],
       },
       {
-        id: "butter",
-        name: "Butter",
-        sub: ["Salted Butter"],
-      },
-      {
-        id: "cheese",
-        name: "Cheese",
-        sub: ["Cheddar"],
+        id: "home",
+        name: "Home Decor",
+        sub: [
+          "Wall Decor",
+          "Photo Frames",
+          "Lamps",
+          "Clocks",
+        ],
       },
     ],
   },
+
+  {
+    id: "sports",
+    name: "Sports & Fitness",
+    sub: [
+      {
+        id: "gym",
+        name: "Gym Equipment",
+        sub: [
+          "Dumbbells",
+          "Resistance Bands",
+          "Yoga Mats",
+          "Skipping Rope",
+        ],
+      },
+      {
+        id: "outdoor",
+        name: "Outdoor Sports",
+        sub: [
+          "Cricket",
+          "Football",
+          "Badminton",
+          "Basketball",
+        ],
+      },
+    ],
+  },
+
+  {
+    id: "books",
+    name: "Books",
+    sub: [
+      {
+        id: "genres",
+        name: "Genres",
+        sub: [
+          "Fiction",
+          "Non Fiction",
+          "Biography",
+          "Self Help",
+          "Technology",
+          "Education",
+        ],
+      },
+    ],
+  },
+
+  {
+    id: "toys",
+    name: "Toys & Baby",
+    sub: [
+      {
+        id: "toys",
+        name: "Toys",
+        sub: [
+          "Remote Control Toys",
+          "Building Blocks",
+          "Soft Toys",
+        ],
+      },
+      {
+        id: "baby",
+        name: "Baby Care",
+        sub: [
+          "Diapers",
+          "Baby Lotion",
+          "Baby Powder",
+        ],
+      },
+    ],
+  },
+
+  
 ];

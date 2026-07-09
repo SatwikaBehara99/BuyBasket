@@ -36,6 +36,11 @@ export async function POST(req: Request) {
     const name: string = body.name;
     const description: string | null = body.description || null;
     const category: string | null = body.category || null;
+     const subcategory: string | null = body.subcategory || null;
+  const subSubcategory: string | null = body.subSubCategory || null;
+    const brand: string | null = body.brand || null;
+    const featured: boolean = body.featured || false;
+    const status: string = body.status || "ACTIVE";
     const variants = body.variants;
 
     if (!name || !variants || variants.length === 0) {
@@ -46,28 +51,33 @@ export async function POST(req: Request) {
     }
 
     //  STRONG VALIDATION + IMAGE FIX
-    const cleanVariants = variants.map((v: any, i: number) => {
-      //  IMPORTANT DEBUG
-      console.log("VARIANT IMAGE:", v.image);
+    
+    const cleanVariants = variants.map((v: any, i: number) => ({
+  name: v.name || `Variant ${i + 1}`,
 
-      return {
-        name: v.name || `Variant ${i + 1}`,
-        price: Number(v.price) || 0,
-        stock: Number(v.stock) || 0,
+  sku: v.sku || null,
+  color: v.color || null,
+  size: v.size || null,
 
-        //  FIX: ALWAYS STORE STRING (NOT NULL)
-        image:
-          typeof v.image === "string" && v.image.trim() !== ""
-            ? v.image
-            : "/spices.png", // fallback instead of null
-      };
-    });
+  price: Number(v.price) || 0,
+  stock: Number(v.stock) || 0,
+
+  image:
+    typeof v.image === "string" && v.image.trim() !== ""
+      ? v.image
+      : "/product-placeholder.png",
+}));
 
     const product = await prisma.product.create({
       data: {
         name,
         description,
         category,
+        subcategory,
+        subSubcategory,
+        brand,
+        featured,
+        status,
         variants: {
           create: cleanVariants,
         },

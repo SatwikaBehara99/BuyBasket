@@ -1,27 +1,25 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]/route";
 
-import AudienceSection from "@/components/LandingPage/components/AudienceSection";
-import Hero from "@/components/LandingPage/components/HeroPage";
-import LegacySection from "@/components/LandingPage/components/LegacySection";
-import OriginSection from "@/components/LandingPage/components/OriginSection";
-import PromiseSection from "@/components/LandingPage/components/PromiseSection";
 
-export default async function Home() {
-  const session = await getServerSession(authOptions);
+import Hero from "@/components/home/Hero";
+import Categories from "@/components/home/Categories";
+import FeaturedProducts from "@/components/home/FeaturedProducts";
+import Deals from "@/components/home/Deals";
+import WhyChooseUs from "@/components/home/WhyChooseUs";
 
+
+
+
+
+export default function Home() {
   return (
-    <div className="w-full h-full">
-
-
-
-      {/* Main Sections */}
+    <main className="bg-gray-50 min-h-screen">
       <Hero />
-      <OriginSection />
-      <AudienceSection />
-      <PromiseSection />
-      <LegacySection />
-
-    </div>
+      <Categories />
+      <FeaturedProducts />
+      <Deals />
+      <WhyChooseUs />
+    </main>
   );
 }
+
+

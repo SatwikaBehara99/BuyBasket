@@ -134,7 +134,7 @@ if (!session) {
 
         <Link
           href="/login?callbackUrl=/wishlist"
-          className="inline-block mt-6 bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-xl font-semibold"
+          className="inline-block mt-6 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-2xl font-semibold"
         >
           Sign In
         </Link>
@@ -146,7 +146,8 @@ if (!session) {
 }
 
   return (
-    <div className="min-h-screen bg-[#f1f3f6] dark:bg-gray-950 px-4 md:px-8 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100
+dark:from-gray-950 dark:via-gray-900 dark:to-black px-4 md:px-8 py-8">
 
       {/* SUCCESS MESSAGE */}
       {success && (
@@ -204,7 +205,7 @@ if (!session) {
 
               <Link
                 href="/products"
-                className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-xl font-semibold transition "
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-semibold transition "
               >
                 Explore Products
               </Link>
@@ -224,7 +225,12 @@ if (!session) {
 
                   <div
                     key={item.id}
-                    className="border-b px-6 py-6 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition relative"
+                    className="border-b px-6 py-6 dark:border-gray-700 rounded-2xl
+                    hover:bg-blue-50
+                    dark:hover:bg-blue-900/10
+                    transition-all
+                    duration-300
+                    hover:shadow-lg"
                   >
 
                     <div className="flex flex-col md:flex-row gap-6">
@@ -235,7 +241,7 @@ if (!session) {
                         className="flex-shrink-0"
                       >
 
-                        <div className="relative w-[170px] h-[170px] bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden border dark:border-gray-700">
+                        <div className="relative w-[170px] h-[170px] bg-gray-100 dark:bg-gray-800 rounded-2xl overflow-hidden border dark:border-gray-700">
 
                           <Image
                             src={
@@ -247,7 +253,7 @@ if (!session) {
                               product.name
                             }
                             fill
-                            className="object-cover"
+                            className="object-contain p-3"
                           />
 
                         </div>
@@ -261,7 +267,7 @@ if (!session) {
                           href={`/products/${product.id}`}
                         >
 
-                          <h2 className="text-[22px] font-semibold text-gray-800 dark:text-white hover:text-red-600 transition cursor-pointer">
+                          <h2 className="text-[22px] font-semibold text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition cursor-pointer">
 
                             {product.name}
 
@@ -299,7 +305,15 @@ if (!session) {
 
                           </span>
 
-                          <span className="text-green-600 font-semibold text-[15px]">
+                          <span className="bg-green-100
+dark:bg-green-900/30
+text-green-700
+dark:text-green-300
+px-3
+py-1
+rounded-full
+text-sm
+font-semibold">
 
                             35% off
 
@@ -329,7 +343,7 @@ if (!session) {
                         {removingId ===
                           item.id && (
 
-                          <div className="absolute right-0 top-10 bg-white dark:bg-gray-900 border dark:border-gray-700 shadow-2xl rounded-xl w-[290px] p-5 z-50">
+                          <div className="absolute right-0 top-10 bg-white dark:bg-gray-900 border dark:border-gray-700 shadow-2xl rounded-2xl w-[290px] p-5 z-50">
 
                             <p className="text-center text-gray-700 dark:text-gray-300 text-[15px] leading-6 mb-6">
 

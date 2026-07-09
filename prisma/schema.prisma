@@ -8,47 +8,39 @@ datasource db {
 }
 
 model User {
-  id        String     @id @default(cuid())
-  name      String?
-  email     String     @unique
-  password  String
-  role      String     @default("user")
-  createdAt DateTime   @default(now())
-  phone     String     @unique
-  firstName String?
-  lastName  String?
-  gender    String?
-  carts     Cart[]
-  orders    Order[]
-  wishlists Wishlist[]
-  addresses Address[]
+  id               String     @id @default(cuid())
+  name             String?
+  email            String     @unique
+  password         String
+  role             String     @default("user")
+  createdAt        DateTime   @default(now())
+  phone            String     @unique
+  firstName        String?
+  lastName         String?
+  gender           String?
+  resetToken         String?
+  resetTokenExpiry   DateTime?
+  addresses        Address[]
+  carts            Cart[]
+  orders           Order[]
+  wishlists        Wishlist[]
 }
 
 model Address {
-  id     String @id @default(cuid())
-  userId String
-
-  name     String
-  phone    String
-  pincode  String
-  locality String
-  area     String
-  city     String
-  state    String
-
+  id             String      @id @default(cuid())
+  userId         String
+  name           String
+  phone          String
+  pincode        String
+  locality       String
+  area           String
+  city           String
+  state          String
   landmark       String?
   alternatePhone String?
-
-  addressType AddressType @default(HOME)
-
-  createdAt DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-enum AddressType {
-  HOME
-  WORK
+  addressType    AddressType @default(HOME)
+  createdAt      DateTime    @default(now())
+  user           User        @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Admin {
@@ -72,20 +64,25 @@ model Product {
   name           String
   description    String?
   createdAt      DateTime         @default(now())
-  packaging      String?
   category       String?
   subSubcategory String?
   subcategory    String?
+  brand          String?
+  featured       Boolean          @default(false)
+  status         String           @default("ACTIVE")
   variants       ProductVariant[]
 }
 
 model ProductVariant {
   id         String         @id @default(cuid())
   name       String
-  price      Int
+  price      Float
   stock      Int
   image      String?
   productId  String
+  color      String?
+  size       String?
+  sku        String?
   cartItems  CartItem[]
   orderItems OrderItem[]
   product    Product        @relation(fields: [productId], references: [id], onDelete: Cascade)
@@ -117,8 +114,6 @@ model Order {
   razorpayPaymentId String?
   userId            String?
   createdAt         DateTime    @default(now())
-  user              User?       @relation(fields: [userId], references: [id])
-  items             OrderItem[]
   deliveryName      String?
   deliveryPhone     String?
   deliveryPincode   String?
@@ -127,6 +122,9 @@ model Order {
   deliveryCity      String?
   deliveryState     String?
   deliveryLandmark  String?
+  paymentMethod     String?
+  user              User?       @relation(fields: [userId], references: [id])
+  items             OrderItem[]
 }
 
 model OrderItem {
@@ -157,6 +155,11 @@ model WishlistItem {
   wishlist   Wishlist       @relation(fields: [wishlistId], references: [id], onDelete: Cascade)
 
   @@unique([wishlistId, variantId])
+}
+
+enum AddressType {
+  HOME
+  WORK
 }
 
 enum OrderStatus {

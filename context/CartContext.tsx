@@ -19,7 +19,7 @@ export type CartItem = {
 };
 
 // FIXED TYPE
-type AddCartItem = Omit<CartItem, "id" | "quantity">;
+type AddCartItem = Omit<CartItem, "id">;
 
 type CartContextType = {
   cart: CartItem[];
@@ -75,7 +75,7 @@ export function CartProvider({
 
     if (existing) {
 
-      existing.quantity += guestItem.quantity;
+      existing.quantity = existing.quantity + guestItem.quantity;
 
     } else {
 
@@ -127,6 +127,12 @@ export function CartProvider({
 
   // ADD TO CART
   const addToCart = (item: AddCartItem) => {
+    const quantity = Math.max(1, item.quantity);
+
+const newItem = {
+  ...item,
+  quantity,
+};
     const key = item.variantId;
     setCart((prev) => {
       const existing = prev.find( (p) => p.variantId === key );
@@ -136,7 +142,7 @@ export function CartProvider({
           p.variantId === key
             ? {
               ...p,
-              quantity: p.quantity + 1,
+              quantity: p.quantity + item.quantity,
             }
             : p
         );
@@ -146,9 +152,9 @@ export function CartProvider({
       return [
         ...prev,
         {
-          ...item,
+          ...newItem,
           id: crypto.randomUUID(),
-          quantity: 1,
+          
         },
       ];
     });

@@ -1,3 +1,4 @@
+console.log("NEXTAUTH ROUTE LOADED");
 export const runtime = "nodejs";
 
 import NextAuth, {
@@ -169,11 +170,11 @@ NextAuthOptions = {
   session: {
     strategy: "jwt",
 
-    maxAge: 60 * 60, // 1 hour
+    maxAge: 30 * 24 * 60 * 60, // 30 Days
   },
 
   jwt: {
-    maxAge: 60 * 60,
+    maxAge: 30 * 24 * 60 * 60, // 30 Days
   },
 
   callbacks: {

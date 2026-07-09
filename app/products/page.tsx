@@ -4,9 +4,16 @@ import ProductsList from "@/components/Product/components/ProductsSection";
 
 export default async function ProductsPage() {
   const products = await prisma.product.findMany({
-    include: { variants: true },
-    orderBy: { createdAt: "desc" },
-  });
+  where: {
+    status: "ACTIVE",
+  },
+  include: {
+    variants: true,
+  },
+  orderBy: {
+    createdAt: "desc",
+  },
+});
 
   return (
     <>

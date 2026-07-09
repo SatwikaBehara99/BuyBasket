@@ -1,221 +1,375 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect, useRef, } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { ShoppingCart, User, LogOut, Package, Heart, Bell, TicketPercent, MapPin, Search, X, ChevronDown } from "lucide-react";
-import { useSession, signOut, } from "next-auth/react";
-import { useRouter, usePathname, } from "next/navigation";
+import {
+  ShoppingCart,
+  User,
+  Heart,
+  Search,
+  Menu,
+  X,
+  ChevronDown,
+  LogOut,
+  Package,
+  MapPin,
+  TicketPercent,
+  Bell,
+} from "lucide-react";
+import { useSession, signOut } from "next-auth/react";
+import { useRouter, usePathname } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 
 const navItems = [
-{ name: "Home", href: "/" },
-{ name: "Our Story", href: "/our-story" },
-{ name: "Products", href: "/products" },
-{ name: "Blogs", href: "/blogs" },
+  {
+    name: "Home",
+    href: "/",
+  },
+  {
+    name: "Products",
+    href: "/products",
+  },
+  {
+    name: "Today's Deals",
+    href: "#",
+  },
+  {
+    name: "Categories",
+    href: "#",
+  },
 ];
 
-export default function Navbar() {
+export default function Header() {
 
-const { data: session } = useSession();
-const router = useRouter();
-const pathname = usePathname();
-const [showMenu, setShowMenu] = useState(false);
-const menuRef = useRef<HTMLDivElement>(null);
-const { cart } = useCart();
-const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+  const { data: session} = useSession();
 
-// CLOSE MENU ON ROUTE CHANGE
-useEffect(() => { setShowMenu(false); }, [pathname]);
 
-// CLOSE MENU ON OUTSIDE CLICK
-useEffect(() => { const handleClickOutside = ( event: MouseEvent ) => {
-if (
-menuRef.current && !menuRef.current.contains( event.target as Node )
-) {
-setShowMenu(false);
-}
-};
+  const router = useRouter();
 
-document.addEventListener( "mousedown", handleClickOutside );  
-return () => { document.removeEventListener( "mousedown", handleClickOutside );  
-};
+  const pathname = usePathname();
 
-}, []);
+  const { cart } = useCart();
 
-return (
+  const cartCount = cart.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
 
-<nav className="sticky top-0 w-full bg-white dark:bg-[#111827] border-b border-gray-200 dark:border-gray-700 shadow-sm px-6 md:px-16 py-4 flex items-center justify-between z-50 text-black dark:text-white">
+  const [showMenu, setShowMenu] = useState(false);
 
-{/* LOGO */}
+  const [mobileMenu, setMobileMenu] = useState(false);
 
-  <Link href="/" className="text-3xl font-serif tracking-wide">  
-    SPICERY  
-  </Link>  {/* NAVIGATION */}
+  const menuRef = useRef<HTMLDivElement>(null);
 
-  <div className="hidden md:flex items-center gap-10">  
-    {navItems.map((item) => (  
-      <motion.div key={item.name} whileHover={{ scale: 1.05 }}>  
-        <Link  
-          href={item.href}  
-          className="hover:text-gray-700 dark:hover:text-gray-300 transition"  
-        >  
-          {item.name}  
-        </Link>  
-      </motion.div>  
-    ))}  {/* WISHLIST */}  
-<button  
-  onClick={() => router.push("/wishlist")}  
-  className="flex items-center gap-2 hover:text-gray-700 dark:hover:text-gray-300 transition"  
->  
-  <Heart size={22} />  
-  <span>Wishlist</span>  
-</button>  
+  useEffect(() => {
+    setShowMenu(false);
+    setMobileMenu(false);
+  }, [pathname]);
 
-{/* CART */}  
-<button  
-  onClick={() => router.push("/cart")}  
-  className="relative flex items-center gap-2 hover:text-gray-700 dark:hover:text-gray-300 transition"  
->  
-  <div className="relative">  
-    <ShoppingCart size={22} />  
-    {cartCount > 0 && (  
-      <span className="absolute -top-2 -right-3 bg-red-500 text-white text-xs px-1.5 rounded-full">  
-        {cartCount}  
-      </span>  
-    )}  
-  </div>  
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target as Node)
+      ) {
+        setShowMenu(false);
+      }
+    };
 
-  <span>Cart</span>  
-</button>  
+    document.addEventListener("mousedown", handleClickOutside);
 
-{/* AUTH */}  
-{!session ? (  
-  <button  
-    onClick={() => router.push("/login")}  
-    className="flex items-center gap-2 hover:text-gray-700 dark:hover:text-gray-300 transition"  
-  >  
-    <User size={22} />  
-    <span>Sign In</span>  
-  </button>  
-) : (  
-  <div className="relative" ref={menuRef}>  
-    {/* ACCOUNT BUTTON */}  
-    <button  
-      onClick={() => setShowMenu(!showMenu)}  
-      className="flex items-center gap-2 hover:text-gray-700 dark:hover:text-gray-300 transition"  
-    >  
-      <User size={22} />  
-      <span>Account</span>  
-    </button>  
+    return () =>
+      document.removeEventListener(
+        "mousedown",
+        handleClickOutside
+      );
+  }, []);
 
-    {/* DROPDOWN */}  
-    {showMenu && (  
-      <div className="absolute right-0 top-12 w-80 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-2xl overflow-hidden z-50 text-black dark:text-white">  
+    
+  return (
+    <header className="sticky top-0 z-50 bg-white dark:bg-gray-900 shadow-sm border-b">
 
-        {/* HEADER */}  
-        <div className="px-5 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">  
-          <h2 className="text-lg font-semibold text-gray-800 dark:text-white">  
-            Your Account  
-          </h2>  
+      <div className="max-w-7xl mx-auto px-4 md:px-8">
 
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 truncate">  
-            {session?.user?.email}  
-          </p>  
-        </div>  
+        <div className="flex items-center justify-between h-20">
 
-        {/* MENU ITEMS */}  
-        <div className="py-2">  
+          {/* Logo */}
 
-          {/* PROFILE */}  
-          <button  
-            onClick={() => {  
-              setShowMenu(false);  
-              router.push("/account");  
-            }}  
-            className="w-full flex items-center gap-4 px-5 py-3 hover:bg-gray-100 dark:hover:bg-gray-800 transition"  
-          >  
-            <User size={20} className="text-gray-600 dark:text-gray-300" />  
-            <span className="text-[15px] font-medium">  
-              My Profile  
-            </span>  
-          </button>  
+          <Link
+            href="/"
+            className="flex flex-col"
+          >
+            <span className="text-3xl font-bold text-blue-600">
+              BuyBasket
+            </span>
 
-          {/* ORDERS */}  
-          <button  
-            onClick={() => {  
-              setShowMenu(false);  
-              router.push("/orders");  
-            }}  
-            className="w-full flex items-center gap-4 px-5 py-3 hover:bg-gray-100 dark:hover:bg-gray-800 transition"  
-          >  
-            <Package size={20} className="text-gray-600 dark:text-gray-300" />  
-            <span className="text-[15px] font-medium">  
-              Orders  
-            </span>  
-          </button>  
+            <span className="text-xs text-gray-500">
+              Everything You Need in One Basket
+            </span>
+          </Link>
 
-          {/* COUPONS */}  
-          <button className="w-full flex items-center gap-4 px-5 py-3 hover:bg-gray-100 dark:hover:bg-gray-800 transition">  
-            <TicketPercent size={20} className="text-gray-600 dark:text-gray-300" />  
-            <span className="text-[15px] font-medium">  
-              Coupons  
-            </span>  
-          </button>  
+          {/* Search */}
 
-          {/* SAVED ADDRESSES */}  
-          <button className="w-full flex items-center gap-4 px-5 py-3 hover:bg-gray-100 dark:hover:bg-gray-800 transition">  
-            <MapPin size={20} className="text-gray-600 dark:text-gray-300" />  
-            <span className="text-[15px] font-medium">  
-              Saved Addresses  
-            </span>  
-          </button>  
+          <div className="hidden lg:flex flex-1 max-w-xl mx-10">
 
-          {/* WISHLIST */}  
-          <button  
-            onClick={() => {  
-              setShowMenu(false);  
-              router.push("/wishlist");  
-            }}  
-            className="w-full flex items-center gap-4 px-5 py-3 hover:bg-gray-100 dark:hover:bg-gray-800 transition"  
-          >  
-            <Heart size={20} className="text-gray-600 dark:text-gray-300" />  
-            <span className="text-[15px] font-medium">  
-              Wishlist  
-            </span>  
-          </button>  
+            <div className="flex items-center w-full bg-gray-100 dark:bg-gray-800 rounded-lg px-4">
 
-          {/* NOTIFICATIONS */}  
-          <button className="w-full flex items-center gap-4 px-5 py-3 hover:bg-gray-100 dark:hover:bg-gray-800 transition">  
-            <Bell size={20} className="text-gray-600 dark:text-gray-300" />  
-            <span className="text-[15px] font-medium">  
-              Notifications  
-            </span>  
-          </button>  
-        </div>  
+              <Search
+                size={20}
+                className="text-gray-500"
+              />
 
-        {/* LOGOUT */}  
-        <div className="border-t border-gray-200 dark:border-gray-700">  
-          <button  
-            onClick={() => {  
-              setShowMenu(false);  
-              signOut({ callbackUrl: "/" });  
-            }}  
-            className="w-full flex items-center gap-4 px-5 py-4 hover:bg-red-50 dark:hover:bg-red-950 transition text-red-500"  
-          >  
-            <LogOut size={20} />  
-            <span className="font-medium">  
-              Logout  
-            </span>  
-          </button>  
-        </div>  
+              <input
+                type="text"
+                placeholder="Search products..."
+                className="w-full bg-transparent outline-none px-3 py-3"
+              />
 
-      </div>  
-    )}  
-  </div>  
-)}
+            </div>
 
-  </div>  
-</nav>  
-  );  
+          </div>
+
+          {/* Desktop Navigation */}
+
+          <nav className="hidden lg:flex items-center gap-7">
+
+            {navItems.map((item) => (
+              <motion.div
+                key={item.name}
+                whileHover={{ scale: 1.05 }}
+              >
+                <Link
+                  href={item.href}
+                  className="font-medium hover:text-blue-600 transition"
+                >
+                  {item.name}
+                </Link>
+              </motion.div>
+            ))}
+
+            {/* Wishlist */}
+
+            <button
+              onClick={() => router.push("/wishlist")}
+              className="flex items-center gap-2 hover:text-blue-600 transition"
+            >
+              <Heart size={22} />
+            </button>
+
+            {/* Cart */}
+
+            <button
+              onClick={() => router.push("/cart")}
+              className="relative flex items-center hover:text-blue-600 transition"
+            >
+              <ShoppingCart size={22} />
+
+              {cartCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
+            </button>
+
+            {/* Login / Account */}
+
+            {!session ? (
+              <button
+                onClick={() => router.push("/login")}
+                className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition"
+              >
+                Login
+              </button>
+            ) : (
+              <div
+                className="relative"
+                ref={menuRef}
+              >
+                <button
+                  onClick={() => setShowMenu(!showMenu)}
+                  className="flex items-center gap-2 hover:text-blue-600"
+                >
+                  <User size={22} />
+                  <ChevronDown size={18} />
+                </button>
+
+                {showMenu && (
+                  <div className="absolute right-0 top-14 w-64 bg-white rounded-xl shadow-xl border overflow-hidden">
+
+                    <div className="p-4 border-b">
+                      <p className="font-semibold">
+                        {session.user?.name || "User"}
+                      </p>
+
+                      <p className="text-sm text-gray-500 truncate">
+                        {session.user?.email}
+                      </p>
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        setShowMenu(false);
+                        router.push("/account");
+                      }}
+                      className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+                    >
+                      <User size={18} />
+                      My Profile
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        setShowMenu(false);
+                        router.push("/orders");
+                      }}
+                      className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+                    >
+                      <Package size={18} />
+                      My Orders
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        setShowMenu(false);
+                        router.push("/wishlist");
+                      }}
+                      className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+                    >
+                      <Heart size={18} />
+                      Wishlist
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        setShowMenu(false);
+                        router.push("/account/addresses");
+                      }}
+                      className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+                    >
+                      <MapPin size={18} />
+                      Saved Addresses
+                    </button>
+
+                    <button
+                      className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+                    >
+                      <TicketPercent size={18} />
+                      Coupons
+                    </button>
+
+                    <button
+                      className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+                    >
+                      <Bell size={18} />
+                      Notifications
+                    </button>
+
+                    <button
+                      onClick={() =>
+                        signOut({
+                          callbackUrl: "/",
+                        })
+                      }
+                      className="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50"
+                    >
+                      <LogOut size={18} />
+                      Logout
+                    </button>
+
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Mobile Menu Button */}
+
+            <button
+              className="lg:hidden"
+              onClick={() => setMobileMenu(!mobileMenu)}
+            >
+              {mobileMenu ? (
+                <X size={28} />
+              ) : (
+                <Menu size={28} />
+              )}
+            </button>
+
+          </nav>
+
+          </div>
+
+        {/* Mobile Menu */}
+
+        {mobileMenu && (
+          <div className="lg:hidden border-t bg-white py-4">
+
+            <div className="flex flex-col gap-4">
+
+              {navItems.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  onClick={() => setMobileMenu(false)}
+                  className="px-2 py-2 text-gray-700 hover:text-blue-600 font-medium"
+                >
+                  {item.name}
+                </Link>
+              ))}
+
+              <button
+                onClick={() => {
+                  router.push("/wishlist");
+                  setMobileMenu(false);
+                }}
+                className="flex items-center gap-2 px-2 py-2 text-gray-700 hover:text-blue-600"
+              >
+                <Heart size={20} />
+                Wishlist
+              </button>
+
+              <button
+                onClick={() => {
+                  router.push("/cart");
+                  setMobileMenu(false);
+                }}
+                className="flex items-center gap-2 px-2 py-2 text-gray-700 hover:text-blue-600"
+              >
+                <ShoppingCart size={20} />
+                Cart
+              </button>
+
+              {!session ? (
+                <button
+                  onClick={() => {
+                    router.push("/login");
+                    setMobileMenu(false);
+                  }}
+                  className="bg-blue-600 text-white py-2 rounded-lg mt-2"
+                >
+                  Login
+                </button>
+              ) : (
+                <button
+                  onClick={() =>
+                    signOut({
+                      callbackUrl: "/",
+                    })
+                  }
+                  className="flex items-center gap-2 px-2 py-2 text-red-500"
+                >
+                  <LogOut size={20} />
+                  Logout
+                </button>
+              )}
+
+            </div>
+
+          </div>
+        )}
+
+      </div>
+
+    </header>
+  );
 }

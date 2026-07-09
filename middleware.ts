@@ -1,19 +1,14 @@
 import { NextResponse } from "next/server";
-
 import { getToken, encode } from "next-auth/jwt";
-
 import type { NextRequest } from "next/server";
 
-export async function middleware(
-  req: NextRequest
-) {
-
-  const token = await getToken({
-    req,
-    secret: process.env.NEXTAUTH_SECRET,
-  });
-
+export async function middleware( req: NextRequest ) {
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET, });
   const { pathname } = req.nextUrl;
+  // Allow NextAuth API routes
+if (pathname.startsWith("/api/auth")) {
+  return NextResponse.next();
+}
 
   // ================= LOGIN PAGES =================
 
@@ -27,7 +22,6 @@ export async function middleware(
       token &&
       token.role !== "admin"
     ) {
-
       return NextResponse.redirect(
         new URL("/", req.url)
       );
@@ -67,7 +61,7 @@ export async function middleware(
   // ================= ADMIN ROUTES =================
 
   if (
-    pathname.startsWith("/admin")
+    pathname.startsWith("/admin") && pathname !== "/admin/login"
   ) {
 
     // no login
@@ -107,20 +101,14 @@ export async function middleware(
       now;
 
     // session expired
-    if (
-      now - lastActivity >
-        inactiveLimit ||
-      now - loginTime >
-        absoluteLimit
-    ) {
-
+    if (now - lastActivity > inactiveLimit || now - loginTime > absoluteLimit) {
       return NextResponse.redirect(
         new URL("/login", req.url)
       );
     }
 
-    // update activity
-    const updatedToken = {
+    // update activity  
+   /**   const updatedToken = {
       ...token,
       lastActivity: now,
     };
@@ -166,8 +154,9 @@ export async function middleware(
       }
     );
 
-    return response;
-  }
+    return response;      */
+    return NextResponse.next();       
+  }      
 
   return NextResponse.next();
 }
@@ -175,7 +164,6 @@ export async function middleware(
 export const config = {
   matcher: [
     "/admin/:path*",
-    "/login",
     "/admin/login",
   ],
 };

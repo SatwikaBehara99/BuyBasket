@@ -2,6 +2,9 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
+import { ProductVariant } from "@prisma/client";
+
+
 
 export async function POST(req: Request) {
   try {
@@ -16,6 +19,8 @@ export async function POST(req: Request) {
     const body = await req.json();
     const items = body.items;
     const addressId = body.addressId;
+    const paymentMethod = body.paymentMethod;
+    
     if (!items || !Array.isArray(items) || items.length === 0) {
       return NextResponse.json(
         { error: "Cart is empty", }, { status: 400, }
@@ -33,7 +38,7 @@ export async function POST(req: Request) {
     // STOCK CHECK
     for (const item of items) {
       const variant = variants.find(
-        (v) => v.id === item.variantId
+        (v: ProductVariant) => v.id === item.variantId
       );
 
       if (!variant) {
@@ -54,15 +59,27 @@ export async function POST(req: Request) {
       (sum: number, item: any) => sum + item.price * item.quantity, 0
     );
 
-    const address = await prisma.address.findUnique({
-      where: { id: addressId, },
-    });
+
+    const address = await prisma.address.findFirst({
+  where: {
+    id: addressId,
+    userId,
+  },
+});
+
+if (!address) {
+  return NextResponse.json(
+    { error: "Invalid address" },
+    { status: 400 }
+  );
+}
     // CREATE ORDER FIRST
     const order = await prisma.order.create({
       data: {
         amount,
         status: "PENDING",
         userId,
+        paymentMethod,
 
     deliveryName: address?.name,
     deliveryPhone: address?.phone,
@@ -81,7 +98,7 @@ export async function POST(req: Request) {
     await Promise.all(
       items.map(async (item: any) => {
         const variant = variants.find(
-          (v) => v.id === item.variantId
+          (v: ProductVariant) => v.id === item.variantId
         );
 
         if (!variant) return;

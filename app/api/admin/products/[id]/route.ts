@@ -111,17 +111,22 @@ export async function PUT(
     });
 
     // IMPORTANT FIX
-    const cleanVariants = body.variants.map((v: any, i: number) => ({
-      name: v.name || `Variant ${i + 1}`,
-      price: Number(v.price) || 0,
-      stock: Number(v.stock) || 0,
+    
+  const cleanVariants = body.variants.map((v: any, i: number) => ({
+  name: v.variantName || `Variant ${i + 1}`,
 
-      // IMAGE SAVE FIX
-      image:
-        typeof v.image === "string" && v.image.trim() !== ""
-          ? v.image
-          : "/spices.png",
-    }));
+  sku: v.sku || null,
+  color: v.color || null,
+  size: v.size || null,
+
+  price: Number(v.price) || 0,
+  stock: Number(v.stock) || 0,
+
+  image:
+    typeof v.image === "string" && v.image.trim() !== ""
+      ? v.image
+      : "/product-placeholder.png",
+}));
 
     // update product
     const updatedProduct = await prisma.product.update({
@@ -132,6 +137,12 @@ export async function PUT(
       data: {
         name: body.name,
         description: body.description,
+        category: body.category,
+        subcategory: body.subcategory,
+        subSubcategory: body.subSubCategory,
+        brand: body.brand || null,
+        featured: body.featured ?? false,
+        status: body.status || "ACTIVE",
 
         variants: {
           create: cleanVariants,
