@@ -1,11 +1,12 @@
 "use client";
 
+import { Suspense } from "react";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Eye,EyeOff, UserCircle2 } from "lucide-react";
 
-export default function UserLoginPage() {
+function LoginForm() {
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -96,5 +97,13 @@ dark:from-gray-950 dark:via-gray-900 dark:to-black">
 
       </form>
     </div>
+  );
+}
+
+export default function UserLoginPage() {
+  return (
+    <Suspense fallback={<div></div>}>
+      <LoginForm />
+    </Suspense>
   );
 }

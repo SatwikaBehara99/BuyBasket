@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 
-export default function PaymentPage() {
 
+function PaymentContent() {
   const router = useRouter();
   const [method, setMethod] = useState("UPI");
   const searchParams = useSearchParams();
@@ -73,5 +73,13 @@ export default function PaymentPage() {
 
       </div>
     </div>
+  );
+}
+
+export default function PaymentPage() {
+  return (
+    <Suspense fallback={<div></div>}>
+      <PaymentContent />
+    </Suspense>
   );
 }

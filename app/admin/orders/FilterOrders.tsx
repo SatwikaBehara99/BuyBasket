@@ -1,8 +1,9 @@
 "use client";
 
+import {Suspense} from "react"
 import { useRouter, useSearchParams } from "next/navigation";
 
-export default function FilterOrders() {
+function FilterOrdersContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const status = searchParams.get("status");
@@ -35,5 +36,13 @@ export default function FilterOrders() {
       <button onClick={() => handleFilter("DELIVERED")} className="bg-green-100 dark:bg-green-900 dark:text-green-100 px-4 py-2 rounded-lg" > Delivered  </button>
       <button onClick={() => handleFilter("CANCELLED")} className="bg-red-100 dark:bg-red-900 dark:text-red-100 px-4 py-2 rounded-lg" > Cancelled  </button>
     </div>
+  );
+}
+
+export default function FilterOrders() {
+  return (
+    <Suspense fallback={<div></div>}>
+      <FilterOrdersContent />
+    </Suspense>
   );
 }

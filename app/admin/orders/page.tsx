@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { prisma } from "@/lib/prisma";
 import UpdateStatus from "./UpdateStatus";
 import FilterOrders from "./FilterOrders";
@@ -94,9 +95,13 @@ export default async function AdminOrdersPage({
         Manage Orders
       </h1>
 
-      <SearchOrders />
+      <Suspense fallback={null}>
+        <SearchOrders />
+      </Suspense>
 
-      <FilterOrders />
+      <Suspense fallback={null}>
+        <FilterOrders />
+      </Suspense>
 
       {/* STATS */}
       <div className="grid md:grid-cols-5 gap-4 mb-8">
@@ -189,3 +194,4 @@ export default async function AdminOrdersPage({
     </div>
   );
 }
+

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { Suspense,useEffect, useMemo, useState } from "react";
 import {
   Heart,
   ShoppingCart,
@@ -39,7 +39,7 @@ interface Props {
   products: Product[];
 }
 
-export default function ProductsSection({
+function ProductsSectionContent({
   products,
 }: Props) {
   const { addToCart } = useCart();
@@ -595,3 +595,12 @@ const totalProducts = filteredProducts.length;
     </section>
   );
 }
+
+export default function ProductsSection({ products }: Props) {
+  return (
+    <Suspense fallback={<div></div>}>
+      <ProductsSectionContent products={products} />
+    </Suspense>
+  );
+}
+
