@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect,useRef } from "react";
+import { Suspense, useEffect,useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 import { useSearchParams } from "next/navigation";
 
 
-export default function PaymentProcessingPage() {
+function PaymentProcessingContent() {
 
   const router = useRouter();
   const { cart, clearCart, } = useCart();
@@ -74,4 +74,13 @@ Do not refresh or close this page.
       </div>
     </div>
   );
+}
+
+
+export default function PaymentProcessingPage() {
+  return (
+    <Suspense fallback={<div></div>}>
+      <PaymentProcessingContent />
+    </Suspense>
+  )
 }
