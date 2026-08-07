@@ -2,6 +2,11 @@
 
 A modern Full Stack E-Commerce web application built using Next.js, TypeScript, PostgreSQL and Prisma.
 
+
+## 🚀 Live Preview
+
+🔗 [View BuyBasket Web App](https://buy-basket-3emmk9nlg-satwika.vercel.app/)  
+
 ## 🚀 Features
 
 - User Authentication
